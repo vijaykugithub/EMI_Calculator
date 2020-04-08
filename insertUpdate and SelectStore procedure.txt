@@ -1,0 +1,214 @@
+/****** Object:  StoredProcedure [dbo].[Usp_Fetch_SFDCBRRL2Deck]    Script Date: 4/8/2020 7:46:04 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+create Procedure [dbo].[Usp_Fetch_SFDCBRRL2Deck]
+(  
+	@OpportunityNumber varchar(100)
+  
+) AS 
+
+BEGIN  
+BEGIN TRANSACTION  
+BEGIN TRY   
+
+IF EXISTS ( SELECT 1 FROM [dbo].[SFDCBRRL2Deck] where [OpportunityNumber] = @OpportunityNumber)
+BEGIN
+SELECT 	[OpportunityNumber],
+		[Opportunity_Name],
+		[Opportunity_Loc],
+		[Customer],
+		[Business LOB],
+		[Solution_Type],
+		[Schedule_Bid],
+		[Schedule_Award],
+		[Schedule_Strart],
+		[Schedule_End],
+		[Opp_Activity_to_Date_Acc_Plan],
+		[Opp_Activity_to_Date_Impact_Review],
+		[Opp_Activity_to_Date_Estimate_Review],
+		[Opp_Activity_to_Date_Risk_Review],
+		[Alignment_to_STRAP],		
+		[Win_Right_Customers_Serve_Them_Forever],
+		[Pricing_Strategy],
+		[Competitive_Differentiation],
+		[Competitive_Selling_Strategy],
+		[Buying_Decision_Criteria],
+		[Decision_Schedule],
+		[Sponsorship],	
+		[Value_We_Provide_to_the_Customer],
+		[Value_We_Provide_Over_the_Competition],	
+		[Project_Milestones_Bid],
+		[Project_Milestones_Award],
+		[Project_Milestones_Start],
+		[Project_Milestones_End]
+FROM [dbo].[SFDCBRRL2Deck]
+WHERE [OpportunityNumber] = @OpportunityNumber
+END
+
+COMMIT TRANSACTION   
+    END TRY  
+    BEGIN CATCH  
+        IF @@TRANCOUNT > 0  
+        BEGIN  
+            ROLLBACK TRANSACTION  
+        END  
+    END CATCH  
+END;
+==========================================================================
+/****** Object:  StoredProcedure [dbo].[Usp_Upsert_SFDCBRRL2Deck]    Script Date: 4/8/2020 7:29:37 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+create Procedure [dbo].[Usp_Upsert_SFDCBRRL2Deck]
+(  
+	@OpportunityNumber varchar(100),
+	@Opportunity_Name varchar(100),
+	@Opportunity_Loc varchar(100),
+	@Customer varchar(100),
+	@Business_LOB varchar(100),
+	@Solution_Type varchar(100),
+	@Schedule_Bid Datetime,
+	@Schedule_Award Datetime,
+	@Schedule_Strart Datetime,
+	@Schedule_End Datetime,
+	@Opp_Activity_to_Date_Acc_Plan Datetime,
+	@Opp_Activity_to_Date_Impact_Review Datetime,
+	@Opp_Activity_to_Date_Estimate_Review Datetime,
+	@Opp_Activity_to_Date_Risk_Review Datetime,	
+	@Alignment_to_STRAP varchar(100),
+	@Win_Right_Customers_Serve_Them_Forever varchar(100),
+	@Pricing_Strategy varchar(100),
+	@Competitive_Differentiation varchar(100),
+	@Competitive_Selling_Strategy varchar(100),
+	@Buying_Decision_Criteria varchar(100),
+	@Decision_Schedule varchar(100),
+	@Sponsorship varchar(100),
+	@Value_We_Provide_to_the_Customer varchar(100),
+	@Value_We_Provide_Over_the_Competition varchar(100),
+	@Project_Milestones_Bid Datetime,
+	@Project_Milestones_Award Datetime,
+	@Project_Milestones_Start Datetime,
+	@Project_Milestones_End Datetime
+  
+) AS 
+
+BEGIN  
+BEGIN TRANSACTION  
+BEGIN TRY   
+
+IF EXISTS ( SELECT 1 FROM [dbo].[SFDCBRRL2Deck] where [OpportunityNumber] = @OpportunityNumber)
+BEGIN
+UPDATE [dbo].[SFDCBRRL2Deck] set  	[OpportunityNumber] = @OpportunityNumber,
+									[Opportunity_Name] = @Opportunity_Name,
+									[Opportunity_Loc] = @Opportunity_Loc,
+									[Customer] = @Customer,
+									[Business LOB] = @Business_LOB,
+									[Solution_Type] = @Solution_Type,
+									[Schedule_Bid] = @Schedule_Bid,
+									[Schedule_Award] = @Schedule_Award,
+									[Schedule_Strart] = @Schedule_Strart,
+									[Schedule_End] = @Schedule_End,
+									[Opp_Activity_to_Date_Acc_Plan] = @Opp_Activity_to_Date_Acc_Plan,
+									[Opp_Activity_to_Date_Impact_Review] = @Opp_Activity_to_Date_Impact_Review,
+									[Opp_Activity_to_Date_Estimate_Review] = @Opp_Activity_to_Date_Estimate_Review,
+									[Opp_Activity_to_Date_Risk_Review] = @Opp_Activity_to_Date_Risk_Review,
+									
+									[Alignment_to_STRAP] = @Alignment_to_STRAP,
+									
+									[Win_Right_Customers_Serve_Them_Forever] = @Win_Right_Customers_Serve_Them_Forever,
+									[Pricing_Strategy] = @Pricing_Strategy,
+									[Competitive_Differentiation] = @Competitive_Differentiation,
+									[Competitive_Selling_Strategy] = @Competitive_Selling_Strategy,
+									[Buying_Decision_Criteria] = @Buying_Decision_Criteria,
+									[Decision_Schedule]=@Decision_Schedule,
+									[Sponsorship] = @Sponsorship,
+									[Value_We_Provide_to_the_Customer] = @Value_We_Provide_to_the_Customer,
+									[Value_We_Provide_Over_the_Competition] = @Value_We_Provide_Over_the_Competition,
+									[Project_Milestones_Bid] = @Project_Milestones_Bid,
+									[Project_Milestones_Award] = @Project_Milestones_Award,
+									[Project_Milestones_Start] = @Project_Milestones_Start,
+									[Project_Milestones_End] = @Project_Milestones_End
+WHERE [OpportunityNumber] = @OpportunityNumber
+END
+ELSE
+BEGIN
+
+  INSERT INTO [dbo].[SFDCBRRL2Deck]  
+  ( 
+  	OpportunityNumber,
+	Opportunity_Name,
+	Opportunity_Loc,
+	Customer,
+	[Business LOB],
+	Solution_Type,
+	Schedule_Bid,
+	Schedule_Award,
+	Schedule_Strart,
+	Schedule_End,
+	Opp_Activity_to_Date_Acc_Plan,
+	Opp_Activity_to_Date_Impact_Review,
+	Opp_Activity_to_Date_Estimate_Review,
+	Opp_Activity_to_Date_Risk_Review,
+	Alignment_to_STRAP,
+	
+	Win_Right_Customers_Serve_Them_Forever,
+	Pricing_Strategy,
+	Competitive_Differentiation,
+	Competitive_Selling_Strategy,
+	Buying_Decision_Criteria,
+	Decision_Schedule,
+	Sponsorship,
+	Value_We_Provide_to_the_Customer,
+	Value_We_Provide_Over_the_Competition,
+	Project_Milestones_Bid,
+	Project_Milestones_Award,
+	Project_Milestones_Start,
+	Project_Milestones_End
+  )  
+   VALUES (
+			@OpportunityNumber,
+			@Opportunity_Name,
+			@Opportunity_Loc,
+			@Customer,
+			@Business_LOB,
+			@Solution_Type,
+			@Schedule_Bid,
+			@Schedule_Award,
+			@Schedule_Strart,
+			@Schedule_End,
+			@Opp_Activity_to_Date_Acc_Plan,
+			@Opp_Activity_to_Date_Impact_Review,
+			@Opp_Activity_to_Date_Estimate_Review,
+			@Opp_Activity_to_Date_Risk_Review,
+			
+			@Alignment_to_STRAP,
+			
+			@Win_Right_Customers_Serve_Them_Forever,
+			@Pricing_Strategy,
+			@Competitive_Differentiation,
+			@Competitive_Selling_Strategy,
+			@Buying_Decision_Criteria,
+			@Decision_Schedule,
+			@Sponsorship,
+			@Value_We_Provide_to_the_Customer,
+			@Value_We_Provide_Over_the_Competition,
+			@Project_Milestones_Bid,
+			@Project_Milestones_Award,
+			@Project_Milestones_Start,
+			@Project_Milestones_End
+		   );
+END  
+COMMIT TRANSACTION   
+    END TRY  
+    BEGIN CATCH  
+        IF @@TRANCOUNT > 0  
+        BEGIN  
+            ROLLBACK TRANSACTION  
+        END  
+    END CATCH  
+END;
